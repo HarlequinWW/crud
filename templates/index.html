@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% block title %}CRUD{% endblock %}
+{% block body %}
+<div class="jumbotron">
+    <h1 class="display-4" align="center"><b>CRUD</b></h1>
+    <h2 align="center">Create, Read, Update, Delete</h2>
+</div>
+<div class="container">
+    <div class="jumbotron">
+        <h2><button type="button" class="btn btn-success" data-toggle="modal" data-target="#mymodal">Create</button></h2>
+
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-success alert-dismissable" role="alert">
+            <button type="button" class="close" data-dismiss="alert">
+                <span aria-hidden="true">x</span>
+            </button>
+            {{message}}
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        <div id="mymodal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Create</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{{url_for('create')}}" method="POST">
+                            <div class="form-group">
+                                <label>Title:</label>
+                                <input type="text" class="form-control" name="title" required="1">
+                            </div>
+                            <div class="form-group">
+                                <label>Note:</label>
+                                <input type="text" class="form-control" name="content" required="1">
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-primary" type="submit">Submit</button>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <table class="table table-dark">
+            <tr>
+                <th>#</th>
+                <th>Title</th>
+                <th>Note</th>
+                <th>Actions</th>
+            </tr>
+            {% for row in notes %}
+            <tr>
+                <td>{{row.id}}</td>
+                <td>{{row.title}}</td>
+                <td>{{row.content}}</td>
+                <td>
+                    <a href="/update/{{row.id}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{row.id}}">Update</a>
+                    <a href="/delete/{{row.id}}" class="btn btn-danger btn-xs" onclick="return confirm('Confirm deletion')">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        {% for row in notes %}
+        <div id="modaledit{{row.id}}" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Update</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{{url_for('update', id=row.id)}}" method="POST">
+                            <div class="form-group">
+                                <label>Title:</label>
+                                <input type="hidden" name="id" value="{{row.id}}">
+                                <input type="text" class="form-control" name="title" value="{{row.title}}">
+                            </div>
+                            <div class="form-group">
+                                <label>Note:</label>
+                                <input type="hidden" name="id" value="{{row.id}}">
+                                <input type="text" class="form-control" name="content" value="{{row.content}}">
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-primary" type="submit">Submit</button>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
