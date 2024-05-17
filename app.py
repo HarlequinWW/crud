@@ -1,10 +1,8 @@
 from flask import Flask, render_template, request, redirect, flash
 from models import Todo, db
 
-
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///crud.db'
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://harlequin:0000@192.168.56.101:22/crudv'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://harlequin:0000@192.168.56.101:5432/crud'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = "StrengGeheim"
 
@@ -34,7 +32,6 @@ def create():
 
 @app.route('/update/<id>/', methods=['POST'])
 def update(id):
-    #data = Todo.query.get(request.form.get('id'))
     data = Todo.query.get(id)
     data.title = request.form['title']
     data.content = request.form['content']
@@ -55,10 +52,6 @@ def delete(id):
     flash("Done!")
 
     return redirect('/')
-
-
-with app.app_context():
-    db.create_all()
 
 
 if __name__ == '__main__':
