@@ -30,9 +30,9 @@ def create():
         return redirect('/')
 
 
-@app.route('/update/<id>/', methods=['POST'])
-def update(id):
-    data = Todo.query.get(id)
+@app.route('/update', methods=['POST'])
+def update():
+    data = Todo.query.get(request.form.get('id'))
     data.title = request.form['title']
     data.content = request.form['content']
 
@@ -43,9 +43,9 @@ def update(id):
     return redirect('/')
 
 
-@app.route('/delete/<id>/', methods=['GET', 'POST'])
-def delete(id):
-    data = Todo.query.get(id)
+@app.route('/delete', methods=['GET'])
+def delete():
+    data = Todo.query.get(request.form.get('id'))
     db.session.delete(data)
     db.session.commit()
 

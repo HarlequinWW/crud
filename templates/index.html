@@ -63,8 +63,8 @@
                 <td>{{row.title}}</td>
                 <td>{{row.content}}</td>
                 <td>
-                    <a href="/update/{{row.id}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{row.id}}">Update</a>
-                    <a href="/delete/{{row.id}}" class="btn btn-danger btn-xs" onclick="return confirm('Confirm deletion')">Delete</a>
+                    <a href="/update" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{row.id}}">Update</a>
+                    <a href="/delete" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#modaldelete{{row.id}}">Delete</a>
                 </td>
             </tr>
             {% endfor %}
@@ -78,7 +78,36 @@
                         <h4 class="modal-title">Update</h4>
                     </div>
                     <div class="modal-body">
-                        <form action="{{url_for('update', id=row.id)}}" method="POST">
+                        <form action="{{url_for('update')}}" method="POST">
+                            <div class="form-group">
+                                <label>Title:</label>
+                                <input type="hidden" name="id" value="{{row.id}}">
+                                <input type="text" class="form-control" name="title" value="{{row.title}}">
+                            </div>
+                            <div class="form-group">
+                                <label>Note:</label>
+                                <input type="hidden" name="id" value="{{row.id}}">
+                                <input type="text" class="form-control" name="content" value="{{row.content}}">
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-primary" type="submit">Submit</button>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="modaldelete{{row.id}}" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Update</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{{url_for('delete')}}" method="GET">
                             <div class="form-group">
                                 <label>Title:</label>
                                 <input type="hidden" name="id" value="{{row.id}}">
